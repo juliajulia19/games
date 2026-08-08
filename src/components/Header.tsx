@@ -1,4 +1,4 @@
-import { AudioLines, AudioOff, Sparkles } from 'lucide-react';
+import { AudioLines, Sparkles, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 
@@ -32,7 +32,7 @@ export const Header = () => {
           onClick={toggleSound}
           className="rounded-full bg-white/20 p-3 text-white transition hover:scale-105"
         >
-          {progress.soundEnabled ? <AudioLines className="h-5 w-5" /> : <AudioOff className="h-5 w-5" />}
+          {progress.soundEnabled ? <AudioLines className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
         </button>
       </div>
     </motion.header>

@@ -7,8 +7,6 @@ import { useSpeech } from '../../hooks/useSpeech';
 import { useGame } from '../../context/GameContext';
 import { alphabetQuestions } from './alphabetData';
 
-const rocketStages = ['body', 'window', 'wings', 'engine', 'flame'];
-
 type AlphabetRocketProps = {
   onBack: () => void;
   onFinish: () => void;
@@ -90,7 +88,6 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
             <div className="mb-6 text-4xl">{current.image}</div>
             <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-2">
               {current.options.map((option) => {
-                const isCorrect = option === current.answer;
                 const isSelected = selected === option;
                 return (
                   <motion.button

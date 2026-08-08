@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useGame } from './context/GameContext';
+import { GameProvider, useGame } from './context/GameContext';
 import { GalaxyMap } from './pages/GalaxyMap';
 
 function AppContent() {

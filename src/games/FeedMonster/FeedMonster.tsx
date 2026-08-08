@@ -19,7 +19,6 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
   const { speak } = useSpeech();
   const [round, setRound] = useState(0);
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
-  const [finished, setFinished] = useState(false);
   const [score, setScore] = useState(0);
 
   const questions = useMemo(() => {
@@ -44,7 +43,6 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
       speak(`Yummy! ${current.word}`);
       setTimeout(() => {
         if (round === roundCount - 1) {
-          setFinished(true);
           completeGame('monster');
           if (!progress.crystals.monster) unlockCrystal('monster');
           onFinish();
