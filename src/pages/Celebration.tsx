@@ -36,10 +36,10 @@ export const Celebration = () => {
         <h1 className="text-4xl font-black sm:text-5xl">You saved the English Galaxy!</h1>
         <p className="mt-3 text-xl text-cyan-100">Amazing job, Space Explorer!</p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          {Object.entries(progress.crystals).map(([key, value]) => value ? <div key={key} className="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">💎 {key}</div> : null)}
+          {Object.entries(progress.crystals).map(([key, value]) => value ? <div key={key} className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold"><Sparkles className="h-4 w-4 text-amber-300" /> {key}</div> : null)}
         </div>
         <div className="mt-8 flex items-center gap-3 rounded-full bg-white/15 px-4 py-3 text-lg font-semibold">
-          ⭐ Total stars: {progress.stars}
+          <Sparkles className="h-5 w-5 text-yellow-300" /> Total stars: {progress.stars}
         </div>
         <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row">
           <button onClick={() => window.location.reload()} className="rounded-full bg-white px-6 py-3 font-black text-slate-900">Explore Again</button>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Eye, Skull, Sparkles } from 'lucide-react';
+import { BookOpen, Eye, Rocket, Skull, Sparkles } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Lumi } from '../components/Lumi';
 import { PlanetCard } from '../components/PlanetCard';
@@ -106,7 +106,9 @@ export const GalaxyMap = () => {
             <Lumi message="Hi! I'm Lumi!" />
             <h2 className="mt-6 text-3xl font-black">English words are missing from our galaxy!</h2>
             <p className="mt-3 text-lg">Can you help me find them?</p>
-            <button onClick={startJourney} className="mt-6 rounded-full bg-white px-6 py-3 font-black text-slate-900">Let&apos;s Go! 🚀</button>
+            <button onClick={startJourney} className="mt-6 flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-black text-slate-900">
+              <Rocket className="h-5 w-5" /> Let&apos;s Go!
+            </button>
           </motion.div>
         </motion.div>
       ) : null}

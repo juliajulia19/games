@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 type PlanetCardProps = {
@@ -20,8 +21,13 @@ export const PlanetCard = ({ title, subtitle, icon: Icon, colorClass, onPlay, co
     >
       <div className={`relative mx-auto mb-4 flex h-36 w-36 items-center justify-center rounded-full ${colorClass} floating`}>
         <div className="absolute inset-3 rounded-full border border-white/40" />
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,_rgba(255,255,255,0.35),_transparent_62%)]" />
         <Icon className="h-16 w-16 text-white" />
-        {crystal ? <div className="absolute bottom-2 right-2 rounded-full bg-yellow-300 px-2 py-1 text-xs font-black text-slate-800">💎</div> : null}
+        {crystal ? (
+          <div className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/70 bg-amber-300/90 text-slate-800 shadow-lg">
+            <Sparkles className="h-4 w-4" />
+          </div>
+        ) : null}
       </div>
       <div className="text-center">
         <h3 className="text-xl font-black text-white">{title}</h3>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Search, Sparkles } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useSpeech } from '../../hooks/useSpeech';
 import { Lumi } from '../../components/Lumi';
@@ -91,7 +91,9 @@ export const EnglishDetective = ({ onBack, onFinish }: EnglishDetectiveProps) =>
         <motion.aside initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="rounded-[36px] border border-white/20 bg-white/10 p-5 shadow-soft backdrop-blur">
           <Lumi message={feedback === 'correct' ? 'Great job!' : feedback === 'wrong' ? 'Hmm... Look again!' : 'Detective mode!'} withBubble />
           <div className="mt-6 rounded-[24px] bg-slate-950/25 p-4 text-center">
-            <div className="text-5xl">🔎</div>
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-cyan-300/40 bg-cyan-400/20 text-cyan-100">
+              <Search className="h-8 w-8" />
+            </div>
             <p className="mt-3 text-lg font-semibold">Read the clue and pick the right answer.</p>
           </div>
         </motion.aside>
