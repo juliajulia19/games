@@ -63,7 +63,9 @@ export const EnglishDetective = ({ onBack, onFinish }: EnglishDetectiveProps) =>
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-pink-200">English Detective</p>
               <h2 className="text-2xl font-black">Solve the mystery!</h2>
             </div>
-            <div className="rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">⭐ {score}</div>
+            <div className="flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">
+              <Sparkles className="h-4 w-4 text-yellow-300" /> {score}
+            </div>
           </div>
           <ProgressBar current={step + 1} total={questions.length} />
           <div className="mt-6 rounded-[32px] bg-slate-950/25 p-6">

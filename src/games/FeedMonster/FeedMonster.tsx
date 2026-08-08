@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Orbit, Sparkles } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useSpeech } from '../../hooks/useSpeech';
 import { Lumi } from '../../components/Lumi';
@@ -71,7 +71,9 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-200">Feed the Monster</p>
               <h2 className="text-2xl font-black">Feed the monster the right food!</h2>
             </div>
-            <div className="rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">⭐ {score}</div>
+            <div className="flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">
+              <Sparkles className="h-4 w-4 text-yellow-300" /> {score}
+            </div>
           </div>
           <ProgressBar current={round + 1} total={roundCount} />
           <div className="mt-6 rounded-[32px] bg-slate-950/25 p-6">
@@ -79,7 +81,12 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
               <motion.div animate={feedback === 'correct' ? { scale: [1, 1.08, 1], y: [0, -8, 0] } : { scale: 1 }} transition={{ duration: 0.6 }} className="relative flex h-40 w-40 items-center justify-center rounded-[40px] bg-gradient-to-br from-emerald-400 to-lime-500">
                 <div className="absolute -top-2 right-5 h-8 w-8 rounded-full bg-amber-300" />
                 <div className="absolute inset-0 rounded-[40px] border border-white/30" />
-                <span className="text-5xl">👾</span>
+                <div className="relative h-20 w-20 rounded-[24px] border border-white/50 bg-slate-950/40 p-3">
+                  <div className="absolute left-4 top-4 h-6 w-6 rounded-full border border-cyan-300/60" />
+                  <div className="absolute bottom-4 right-4 h-8 w-8 rounded-full bg-fuchsia-400/70 blur-[1px]" />
+                  <div className="absolute bottom-3 left-3 h-4 w-8 rounded-full bg-cyan-300/70" />
+                  <Orbit className="absolute inset-3 h-14 w-14 text-cyan-100" />
+                </div>
               </motion.div>
               <div className="rounded-full bg-white/15 px-3 py-2 text-lg font-semibold">{feedback === 'correct' ? 'Yummy!' : feedback === 'wrong' ? 'Oops! Try another one!' : `I want a ${current.word}!`}</div>
             </div>

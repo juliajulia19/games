@@ -1,4 +1,4 @@
-import { AudioLines, Sparkles, VolumeX } from 'lucide-react';
+import { AudioLines, Orbit, Sparkles, VolumeX } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 
@@ -16,16 +16,16 @@ export const Header = () => {
           <Sparkles className="h-5 w-5 text-yellow-300" />
         </div>
         <div>
-          <p className="text-lg font-black tracking-wide text-white">🚀 English Galaxy</p>
+          <p className="text-lg font-black tracking-wide text-white">English Galaxy</p>
           <p className="text-xs text-fuchsia-100">Learn by playing</p>
         </div>
       </div>
       <div className="flex items-center gap-2 sm:gap-3">
-        <div className="rounded-full bg-white/15 px-3 py-2 text-sm font-semibold text-white">
-          ⭐ {progress.stars}
+        <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-3 py-2 text-sm font-semibold text-white">
+          <Sparkles className="h-4 w-4 text-yellow-300" /> {progress.stars}
         </div>
-        <div className="rounded-full bg-white/15 px-3 py-2 text-sm font-semibold text-cyan-100">
-          💎 {Object.values(progress.crystals).filter(Boolean).length}/3
+        <div className="flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-400/15 px-3 py-2 text-sm font-semibold text-cyan-100">
+          <Orbit className="h-4 w-4" /> {Object.values(progress.crystals).filter(Boolean).length}/3
         </div>
         <button
           aria-label="Toggle sound"

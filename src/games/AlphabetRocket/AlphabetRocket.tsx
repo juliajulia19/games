@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, Orbit, Sparkles } from 'lucide-react';
 import { ProgressBar } from '../../components/ProgressBar';
 import { Lumi } from '../../components/Lumi';
 import { useSpeech } from '../../hooks/useSpeech';
@@ -79,13 +79,19 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-200">Alphabet Rocket</p>
               <h2 className="text-2xl font-black">Find a word that starts with {current.letter}!</h2>
             </div>
-            <div className="rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">⭐ {score}</div>
+            <div className="flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">
+              <Sparkles className="h-4 w-4 text-yellow-300" /> {score}
+            </div>
           </div>
           <ProgressBar current={questionIndex + 1} total={questions.length} />
           <div className="mt-6 flex flex-col items-center rounded-[28px] bg-slate-950/25 p-6">
             <div className="mb-4 text-7xl font-black text-white">{current.letter}</div>
             <div className="mb-6 text-3xl font-semibold">{current.word}</div>
-            <div className="mb-6 text-4xl">{current.image}</div>
+            <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-[28px] border border-cyan-300/40 bg-slate-950/40 shadow-inner">
+              <div className="flex h-16 w-16 items-center justify-center rounded-[20px] bg-gradient-to-br from-cyan-400/45 to-violet-500/45 text-4xl font-black text-white">
+                {current.letter}
+              </div>
+            </div>
             <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-2">
               {current.options.map((option) => {
                 const isSelected = selected === option;
@@ -115,7 +121,7 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
         </motion.section>
         <motion.aside initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="rounded-[36px] border border-white/20 bg-white/10 p-5 shadow-soft backdrop-blur">
           <div className="mb-4 flex items-center gap-3">
-            <div className="rounded-full bg-white/15 p-2">🚀</div>
+            <div className="rounded-full bg-white/15 p-2"><Orbit className="h-5 w-5 text-cyan-100" /></div>
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-100">Rocket progress</p>
               <p className="text-lg font-black">{rocketProgress}/5 ready</p>
