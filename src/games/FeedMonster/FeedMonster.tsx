@@ -1,13 +1,22 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Orbit, Sparkles } from 'lucide-react';
+import { ArrowLeft, Check, Sparkles, X } from 'lucide-react';
 import { useGame } from '../../context/GameContext';
 import { useSpeech } from '../../hooks/useSpeech';
 import { Lumi } from '../../components/Lumi';
 import { ProgressBar } from '../../components/ProgressBar';
 import { vocabulary } from './vocabularyData';
+import monsterImage from '../../assets/generated/monster.png';
+import { VocabularyArt } from '../../components/VocabularyArt';
 
 const roundCount = 10;
+const pluralWords = new Set(['shoes', 'socks']);
+
+const withArticle = (word: string) => {
+  if (pluralWords.has(word.toLowerCase())) return word;
+  const article = /^[aeiou]/i.test(word) ? 'an' : 'a';
+  return `${article} ${word}`;
+};
 
 type FeedMonsterProps = {
   onBack: () => void;
@@ -20,6 +29,7 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
   const [round, setRound] = useState(0);
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
   const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
 
   const questions = useMemo(() => {
     const shuffled = [...vocabulary].sort(() => Math.random() - 0.5);
@@ -35,7 +45,8 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
   }, [current]);
 
   const handlePick = (item: { word: string; emoji: string }) => {
-    if (!current) return;
+    if (!current || selected) return;
+    setSelected(item.word);
     if (item.word === current.word) {
       setFeedback('correct');
       setScore((prev) => prev + 1);
@@ -49,11 +60,12 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
         } else {
           setRound((prev) => prev + 1);
           setFeedback(null);
+          setSelected(null);
         }
       }, 900);
     } else {
       setFeedback('wrong');
-      setTimeout(() => setFeedback(null), 800);
+      setTimeout(() => { setFeedback(null); setSelected(null); }, 900);
     }
   };
 
@@ -78,31 +90,28 @@ export const FeedMonster = ({ onBack, onFinish }: FeedMonsterProps) => {
           <ProgressBar current={round + 1} total={roundCount} />
           <div className="mt-6 rounded-[32px] bg-slate-950/25 p-6">
             <div className="mb-6 flex items-center justify-center gap-4">
-              <motion.div animate={feedback === 'correct' ? { scale: [1, 1.08, 1], y: [0, -8, 0] } : { scale: 1 }} transition={{ duration: 0.6 }} className="relative flex h-40 w-40 items-center justify-center rounded-[40px] bg-gradient-to-br from-emerald-400 to-lime-500">
-                <div className="absolute -top-2 right-5 h-8 w-8 rounded-full bg-amber-300" />
-                <div className="absolute inset-0 rounded-[40px] border border-white/30" />
-                <div className="relative h-20 w-20 rounded-[24px] border border-white/50 bg-slate-950/40 p-3">
-                  <div className="absolute left-4 top-4 h-6 w-6 rounded-full border border-cyan-300/60" />
-                  <div className="absolute bottom-4 right-4 h-8 w-8 rounded-full bg-fuchsia-400/70 blur-[1px]" />
-                  <div className="absolute bottom-3 left-3 h-4 w-8 rounded-full bg-cyan-300/70" />
-                  <Orbit className="absolute inset-3 h-14 w-14 text-cyan-100" />
-                </div>
+              <motion.div animate={feedback === 'correct' ? { scale: [1, 1.08, 1], y: [0, -8, 0] } : { scale: 1 }} transition={{ duration: 0.6 }} className="relative flex h-52 w-52 items-center justify-center">
+                <img src={monsterImage} alt="Hungry monster" className="h-full w-full object-contain drop-shadow-[0_18px_18px_rgba(10,50,10,.45)]" />
               </motion.div>
-              <div className="rounded-full bg-white/15 px-3 py-2 text-lg font-semibold">{feedback === 'correct' ? 'Yummy!' : feedback === 'wrong' ? 'Oops! Try another one!' : `I want a ${current.word}!`}</div>
+              <div className="rounded-full bg-white/15 px-3 py-2 text-lg font-semibold">{feedback === 'correct' ? 'Yummy!' : feedback === 'wrong' ? 'Oops! Try another one!' : `I want ${withArticle(current.word)}!`}</div>
             </div>
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {options.map((item) => (
                 <motion.button
                   whileTap={{ scale: 0.97 }}
+                  animate={selected === item.word && feedback === 'wrong' ? { x: [0, -10, 10, -7, 7, 0] } : { x: 0 }}
                   key={item.word}
+                  aria-label={item.word}
                   onClick={() => handlePick(item)}
-                  className="rounded-[24px] border border-white/15 bg-white/10 px-4 py-5 text-center text-lg font-bold text-white"
+                  className={`relative rounded-[24px] border px-4 py-5 text-center text-lg font-bold text-white transition ${selected === item.word && feedback === 'wrong' ? 'border-red-300 bg-red-600/70' : selected === item.word && feedback === 'correct' ? 'border-emerald-200 bg-emerald-500/70' : 'border-white/15 bg-white/10'}`}
                 >
-                  <div className="mb-2 text-4xl">{item.emoji}</div>
-                  <div>{item.word}</div>
+                  <VocabularyArt word={item.word} className="!h-24 !w-24" />
+                  {selected === item.word && feedback === 'wrong' ? <span className="absolute inset-0 flex items-center justify-center rounded-[24px] bg-red-950/50"><X className="h-16 w-16 text-white" strokeWidth={4} /></span> : null}
+                  {selected === item.word && feedback === 'correct' ? <span className="absolute right-2 top-2 rounded-full bg-emerald-500 p-2"><Check className="h-7 w-7" strokeWidth={4} /></span> : null}
                 </motion.button>
               ))}
             </div>
+            {feedback ? <div className={`mt-5 flex items-center justify-center gap-3 rounded-2xl border px-5 py-3 text-xl font-black ${feedback === 'wrong' ? 'border-red-300 bg-red-600' : 'border-emerald-200 bg-emerald-500'}`}>{feedback === 'wrong' ? <><X className="h-8 w-8" strokeWidth={4} /> Wrong — try again!</> : <><Check className="h-8 w-8" strokeWidth={4} /> Correct!</>}</div> : null}
           </div>
         </motion.section>
         <motion.aside initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} className="rounded-[36px] border border-white/20 bg-white/10 p-5 shadow-soft backdrop-blur">

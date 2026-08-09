@@ -94,9 +94,9 @@ export const GalaxyMap = () => {
         </section>
 
         <section className="grid gap-5 lg:grid-cols-3">
-          <PlanetCard title="Alphabet Planet" subtitle="Learn letters and sounds" icon={BookOpen} colorClass="bg-gradient-to-br from-sky-400 to-violet-600" onPlay={() => openGame('alphabet')} completed={completedGames.has('alphabet')} crystal={progress.crystals.alphabet} />
-          <PlanetCard title="Monster Planet" subtitle="Learn new words" icon={Skull} colorClass="bg-gradient-to-br from-emerald-400 to-orange-500" onPlay={() => openGame('monster')} completed={completedGames.has('monster')} crystal={progress.crystals.monster} />
-          <PlanetCard title="Mystery Planet" subtitle="Solve English riddles" icon={Eye} colorClass="bg-gradient-to-br from-pink-500 to-sky-600" onPlay={() => openGame('mystery')} completed={completedGames.has('mystery')} crystal={progress.crystals.mystery} />
+          <PlanetCard title="Alphabet Planet" subtitle="Learn letters and sounds" icon={BookOpen} planetIndex={0} colorClass="" onPlay={() => openGame('alphabet')} completed={completedGames.has('alphabet')} crystal={progress.crystals.alphabet} />
+          <PlanetCard title="Monster Planet" subtitle="Learn new words" icon={Skull} planetIndex={1} colorClass="" onPlay={() => openGame('monster')} completed={completedGames.has('monster')} crystal={progress.crystals.monster} />
+          <PlanetCard title="Mystery Planet" subtitle="Solve English riddles" icon={Eye} planetIndex={2} colorClass="" onPlay={() => openGame('mystery')} completed={completedGames.has('mystery')} crystal={progress.crystals.mystery} />
         </section>
       </motion.main>
 

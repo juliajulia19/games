@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Orbit, Sparkles } from 'lucide-react';
+import { ArrowLeft, Check, Orbit, Sparkles, X } from 'lucide-react';
 import { ProgressBar } from '../../components/ProgressBar';
 import { Lumi } from '../../components/Lumi';
 import { useSpeech } from '../../hooks/useSpeech';
 import { useGame } from '../../context/GameContext';
 import { alphabetQuestions } from './alphabetData';
+import rocketImage from '../../assets/generated/rocket.png';
+import { VocabularyArt } from '../../components/VocabularyArt';
 
 type AlphabetRocketProps = {
   onBack: () => void;
@@ -29,20 +31,14 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
 
   const current = questions[questionIndex];
 
-  useEffect(() => {
-    if (current) {
-      speak(current.word);
-    }
-  }, [current, speak]);
-
   const handleAnswer = (option: string) => {
     if (selected) return;
     setSelected(option);
+    speak(option);
     if (option === current.answer) {
       setFeedback('correct');
       setScore((prev) => prev + 1);
       addStars(1);
-      speak(`Great! ${current.letter} is for ${current.word}`);
       setTimeout(() => {
         if (questionIndex === questions.length - 1) {
           setFinished(true);
@@ -77,7 +73,7 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-200">Alphabet Rocket</p>
-              <h2 className="text-2xl font-black">Find a word that starts with {current.letter}!</h2>
+              <h2 className="text-2xl font-black">Which picture starts with {current.letter}?</h2>
             </div>
             <div className="flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">
               <Sparkles className="h-4 w-4 text-yellow-300" /> {score}
@@ -86,18 +82,13 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
           <ProgressBar current={questionIndex + 1} total={questions.length} />
           <div className="mt-6 flex flex-col items-center rounded-[28px] bg-slate-950/25 p-6">
             <div className="mb-4 text-7xl font-black text-white">{current.letter}</div>
-            <div className="mb-6 text-3xl font-semibold">{current.word}</div>
-            <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-[28px] border border-cyan-300/40 bg-slate-950/40 shadow-inner">
-              <div className="flex h-16 w-16 items-center justify-center rounded-[20px] bg-gradient-to-br from-cyan-400/45 to-violet-500/45 text-4xl font-black text-white">
-                {current.letter}
-              </div>
-            </div>
             <div className="grid w-full grid-cols-2 gap-3 md:grid-cols-2">
               {current.options.map((option) => {
                 const isSelected = selected === option;
                 return (
                   <motion.button
                     whileTap={{ scale: 0.97 }}
+                    animate={selected === option && feedback === 'wrong' ? { x: [0, -10, 10, -7, 7, 0] } : { x: 0 }}
                     key={option}
                     onClick={() => handleAnswer(option)}
                     className={`rounded-[24px] border px-4 py-4 text-left text-lg font-bold transition ${
@@ -108,14 +99,18 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
                           : 'border-white/15 bg-white/10 text-white hover:bg-white/20'
                     }`}
                   >
-                    {option}
+                    <span className="relative flex items-center justify-center">
+                      <VocabularyArt word={option} className="!h-28 !w-28" />
+                      {selected === option && feedback === 'wrong' ? <span className="absolute inset-0 flex items-center justify-center rounded-2xl bg-red-950/55"><X className="h-16 w-16 text-red-200" strokeWidth={4} /></span> : null}
+                      {selected === option && feedback === 'correct' ? <span className="absolute right-0 top-0 rounded-full bg-emerald-500 p-2"><Check className="h-7 w-7 text-white" strokeWidth={4} /></span> : null}
+                    </span>
                   </motion.button>
                 );
               })}
             </div>
-            <div className="mt-4 flex items-center gap-3 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold">
-              <Sparkles className="h-4 w-4" />
-              {feedback === 'correct' ? 'Great! B is for Ball!' : feedback === 'wrong' ? 'Almost! Try again!' : 'Choose the right word!'}
+            <div className={`mt-4 flex min-h-14 items-center justify-center gap-3 rounded-2xl border px-5 py-3 text-xl font-black ${feedback === 'wrong' ? 'border-red-300 bg-red-600 text-white' : feedback === 'correct' ? 'border-emerald-200 bg-emerald-500 text-white' : 'border-white/15 bg-white/15 text-white'}`}>
+              {feedback === 'wrong' ? <X className="h-7 w-7" strokeWidth={4} /> : feedback === 'correct' ? <Check className="h-7 w-7" strokeWidth={4} /> : <Sparkles className="h-5 w-5" />}
+              {feedback === 'correct' ? 'Great!' : feedback === 'wrong' ? 'Almost! Try again!' : 'Choose the right picture!'}
             </div>
           </div>
         </motion.section>
@@ -130,12 +125,7 @@ export const AlphabetRocket = ({ onBack, onFinish }: AlphabetRocketProps) => {
           <div className="relative flex min-h-[320px] items-center justify-center">
             <div className="absolute h-40 w-40 rounded-full bg-cyan-400/20 blur-3xl" />
             <motion.div animate={launched ? { y: -80, x: 40, rotate: 12, scale: 0.95 } : { y: 0 }} transition={{ duration: 0.8 }} className="relative">
-              <div className="h-20 w-24 rounded-[24px] bg-gradient-to-r from-cyan-400 to-violet-500" />
-              {rocketProgress >= 2 ? <div className="absolute left-6 top-4 h-8 w-12 rounded-full bg-white/70" /> : null}
-              {rocketProgress >= 3 ? <div className="absolute -left-5 top-6 h-10 w-6 rounded-full bg-fuchsia-400" /> : null}
-              {rocketProgress >= 4 ? <div className="absolute right-[-18px] top-8 h-6 w-6 rounded-full bg-cyan-300" /> : null}
-              {rocketProgress >= 5 ? <div className="absolute left-9 top-20 h-8 w-6 rounded-full bg-yellow-300" /> : null}
-              <div className="absolute left-10 top-20 h-6 w-6 rounded-full bg-orange-400" />
+              <img src={rocketImage} alt="Alphabet rocket" className="h-72 w-56 object-contain drop-shadow-[0_18px_20px_rgba(0,20,80,.55)]" />
             </motion.div>
           </div>
           <div className="mt-4 rounded-[24px] bg-slate-950/25 p-4">

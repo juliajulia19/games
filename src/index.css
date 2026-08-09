@@ -20,6 +20,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  background: #090629 url('./assets/generated/galaxy-bg.png') center / cover fixed;
 }
 
 * { box-sizing: border-box; }
@@ -38,3 +39,6 @@ button, input, select { font: inherit; }
 
 .floating { animation: floatSlow 3.5s ease-in-out infinite; }
 .glow-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+
+.vocabulary-art { display: inline-block; width: 76px; height: 76px; background-size: 500% 400%; background-repeat: no-repeat; filter: drop-shadow(0 8px 8px rgba(10,5,45,.3)); }
+.vocabulary-fallback { display:inline-flex; width:76px; height:76px; align-items:center; justify-content:center; border-radius:24px; background:linear-gradient(145deg,#fff,#ddd6fe); color:#6d28d9; font-size:2rem; font-weight:900; }
